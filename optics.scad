@@ -124,16 +124,18 @@ module ballSocketScrew(threaded_l=10) {
 }
 
 module ballSocketCover(ball_socket_d) {
-  THICK = 3;
+  THICK = 2;
+  BALL_HOLE = 0.9;
+  SCREW_HOLE_H = (ball_socket_d+THICK*2)/2 - 3;//(ball_socket_d+THICK*2)/2;
   difference() {
     union() {
       cmirror([1,0,0]) translate([(ball_socket_d+SCREW_D)/2,0,0])
-        cylinder(d=SCREW_D+THICK,h=(ball_socket_d+THICK*2)/2); //TODO I could calculate how tall this NEEDS to be...but this is sufficient.
+        cylinder(d=SCREW_D+THICK,h=SCREW_HOLE_H); //TODO I could calculate how tall this NEEDS to be...but this is sufficient.
       sphere(d=ball_socket_d+THICK*2);
     }
     cmirror([1,0,0]) translate([(ball_socket_d+SCREW_D)/2,0,0])
       cylinder(d=SCREW_D,h=BIG);
-    cylinder(d=ball_socket_d*0.75,h=BIG);
+    cylinder(d=ball_socket_d*BALL_HOLE,h=BIG);
     sphere(d=ball_socket_d);
     translate([BIG/2,0,0]) cube([BIG,0.5,BIG],center=true);
     OZm();
@@ -161,7 +163,11 @@ module ballSocketBall(ball_socket_d) {
   }
 }
 
-* peg();
+
+
+// Things you can run directly
+
+peg();
 
 * opticsBase(sx=1,sy=1) { // Screen
   translate([0,0,1*INCH]) cube([GRID,3,2*INCH],center=true);
@@ -214,7 +220,9 @@ union() {
   SCONCE_S = SCONCE_SZ*SQ2;
   SCONCE_DZ = SCONCE_SZ-DEFAULT_DZ;
 
-  * opticsBase(sx=1,sy=1) { // Thing Holder base
+  // Thing Holder base
+  * ballSocketBall(ball_socket_d=20) {
+  //* opticsBase(sx=1,sy=1) {
     translate([0,0,TARGET_DZ]) {
       difference() {
         union() {
@@ -303,7 +311,8 @@ union() {
 }
 
 // There's getting to be rather a few of these very similar things....
-* opticsBase(sx=1,sy=1) { // Beamsplitter holder
+* ballSocketBall(ball_socket_d=20) {
+//* opticsBase(sx=1,sy=1) { // Beamsplitter holder
   //ANGLE_Z = 22.5;
   ANGLE_Z = 45;
   //ANGLE_Z = 90;
@@ -347,7 +356,20 @@ union() {
   }
 }
 
-opticsBase(sx=1,sy=1,ball_socket_d=20);
+* difference() { // Laser button holder
+  D = 14;
+  T = 2;
+  union() {
+    cylinder(d=D+T*2,h=10);
+    translate([0,0,10]) cylinder(d1=D+T*2,d2=D*1.3+T*2,h=10);
+  }
+  union() {
+    cylinder(d=D,h=10);
+    translate([0,0,10]) cylinder(d1=D,d2=D*1.3,h=10);
+  }
+}
+
+* opticsBase(sx=1,sy=1,ball_socket_d=20);
 * ballSocketScrew(threaded_l=20);
 * ballSocketBall(ball_socket_d=20);
 * ballSocketCover(ball_socket_d=20);
