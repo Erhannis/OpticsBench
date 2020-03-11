@@ -1,10 +1,10 @@
 /**
 Optics bench components.
-Printed at -0.08mm horizontal extrusion (Cura).
+Printed at -0.08mm horizontal expansion (Cura).
 
 Defaults to a pegboard of ~0.25 inch holes spaced 1x1 inches.  Check e.g. Home Depot.
 
-There's fixed bases, or a ball-socket variant for fine-tuning.
+There's fixed mounts, or a ball-socket variant for fine-tuning.
 */
 
 use <deps.link/erhannisScad/misc.scad>
@@ -102,7 +102,7 @@ module opticsBase(sx=1, sy=1, grid_dx=GRID, grid_dy=GRID, block_sz=BLOCK_H, peg_
 
 /**
 Screw to mount ball socket.
-This should probably be printed at double negative horizontal extrusion;
+This should probably be printed at triple negative horizontal expansion;
 you don't want it to stick too hard in the hole.
 
 Also, depending on details, the cover MIGHT collide with the peg-columns; sorry.
@@ -165,9 +165,9 @@ module ballSocketBall(ball_socket_d) {
 
 
 
-// Things you can run directly
+//// Things you can run directly
 
-peg();
+* peg();
 
 * opticsBase(sx=1,sy=1) { // Screen
   translate([0,0,1*INCH]) cube([GRID,3,2*INCH],center=true);
@@ -370,6 +370,6 @@ union() {
 }
 
 * opticsBase(sx=1,sy=1,ball_socket_d=20);
-* ballSocketScrew(threaded_l=20);
+ballSocketScrew(threaded_l=15); // Print x3 horizontal expansion
 * ballSocketBall(ball_socket_d=20);
 * ballSocketCover(ball_socket_d=20);
